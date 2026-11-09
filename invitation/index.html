@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>초대장</title>
+<!-- 카톡/DM 미리보기용 (나중에 수정) -->
+<meta property="og:title" content="제 1회 스잡알 고등학교 동창회 💾">
+<meta property="og:description" content="얘들아 반,,,반갑? 초면에 반갑다. 잘 지냈니?">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri@2.40.0/dist/galmuri.css">
+<style>
+  :root{
+    --desk:#1f55d6; --face:#c0c0c0; --hi:#fff; --lo:#808080; --dk:#000;
+    --navy:#000080; --navy2:#1084d0; --ink:#000;
+    --font:"Galmuri11","Galmuri9",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:var(--font); font-size:14px; color:var(--ink);
+    /* 윈도우 98 '구름' 배경화면 느낌 */
+    background:
+      radial-gradient(ellipse 34% 9% at 18% 14%, #fff 0 50%, transparent 74%),
+      radial-gradient(ellipse 22% 6% at 30% 19%, rgba(255,255,255,.95) 0 50%, transparent 74%),
+      radial-gradient(ellipse 30% 8% at 78% 30%, #fff 0 50%, transparent 74%),
+      radial-gradient(ellipse 24% 6% at 64% 36%, rgba(255,255,255,.9) 0 50%, transparent 74%),
+      radial-gradient(ellipse 36% 9% at 24% 64%, #fff 0 50%, transparent 74%),
+      radial-gradient(ellipse 28% 7% at 82% 82%, #fff 0 50%, transparent 74%),
+      linear-gradient(#3b8fe6 0%, #6db4f2 55%, #a8d6fb 100%);
+    background-attachment:fixed;
+    overflow-x:hidden; -webkit-tap-highlight-color:transparent; image-rendering:pixelated;
+  }
+  /* CRT 스캔라인 */
+  body::after{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:100;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,.10) 0 1px, transparent 1px 3px);
+  }
+
+  /* ── 윈도우 98 공통 ── */
+  .win{
+    background:var(--face); padding:3px;
+    box-shadow: inset -1px -1px var(--dk), inset 1px 1px var(--hi), inset -2px -2px var(--lo), inset 2px 2px #dfdfdf, 4px 4px 0 rgba(0,0,0,.35);
+  }
+  .title{
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    background:linear-gradient(90deg,var(--navy),var(--navy2)); color:#fff;
+    padding:3px 4px; font-weight:bold; font-size:12px;
+  }
+  .title > span:first-child{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .title .btns{display:flex;gap:2px;flex-shrink:0}
+  .tbtn{
+    width:22px;height:18px;background:var(--face);color:#000;font-size:11px;line-height:16px;text-align:center;cursor:pointer;
+    box-shadow: inset -1px -1px var(--dk), inset 1px 1px var(--hi), inset -2px -2px var(--lo);
+  }
+  .btn{
+    display:inline-block; background:var(--face); color:#000; text-decoration:none; font-family:var(--font); font-size:14px;
+    padding:10px 18px; min-height:40px; border:0; cursor:pointer; touch-action:manipulation;
+    box-shadow: inset -1px -1px var(--dk), inset 1px 1px var(--hi), inset -2px -2px var(--lo), inset 2px 2px #dfdfdf;
+  }
+  .btn:active{box-shadow: inset 1px 1px var(--dk), inset -1px -1px var(--hi), inset 2px 2px var(--lo)}
+  .sunken{
+    background:#fff; padding:2px;
+    box-shadow: inset 1px 1px var(--lo), inset -1px -1px var(--hi), inset 2px 2px var(--dk);
+  }
+
+  /* ── 1) 데스크톱 + 새 편지 알림창 ── */
+  .stage{
+    position:fixed; inset:0 0 56px 0; z-index:10; display:flex; align-items:center; justify-content:center; padding:104px 16px 16px;
+    /* 옛날 PC 초원 배경화면 (CSS로 그린 것) */
+    background:
+      radial-gradient(ellipse 60% 22% at 18% 20%, rgba(255,255,255,.95) 0 55%, transparent 72%),
+      radial-gradient(ellipse 40% 14% at 32% 25%, rgba(255,255,255,.9) 0 55%, transparent 72%),
+      radial-gradient(ellipse 50% 16% at 78% 14%, rgba(255,255,255,.9) 0 55%, transparent 72%),
+      radial-gradient(ellipse 70% 40% at 20% 100%, #3fa12a 0 62%, transparent 63%),
+      radial-gradient(ellipse 120% 42% at 85% 112%, #2f8a1e 0 66%, transparent 67%),
+      radial-gradient(ellipse 160% 38% at 50% 106%, #56b83a 0 70%, transparent 71%),
+      linear-gradient(#2a6fd6 0%, #5b9cf0 45%, #a9d3ff 72%);
+    transition:opacity .5s ease 4.1s, visibility 0s linear 4.6s;
+  }
+  .icons{position:absolute;left:14px;top:14px;display:flex;flex-direction:column;gap:10px;color:#fff;font-size:12px;text-align:center}
+  .icons div{width:64px;text-shadow:1px 1px #000}
+  .icons i{display:block;font-style:normal;font-size:26px;margin-bottom:0}
+  .dialog{width:min(92vw,340px)}
+  .dialog .body{padding:18px 14px 14px;text-align:center}
+  .dialog p{margin-bottom:14px;line-height:1.6}
+  .blink{animation:blink 1s steps(2) infinite;color:#c00;font-weight:bold}
+  @keyframes blink{50%{opacity:0}}
+
+  /* 편지 봉투 */
+  .envelope{
+    position:relative; width:200px; height:132px; margin:6px auto 16px; perspective:700px;
+    background:none; border:0; cursor:pointer; font-family:var(--font);
+  }
+  .env-back{position:absolute;inset:0;background:#e8d9a8;border:2px solid #000}
+  .letter{
+    position:absolute; left:10px; right:10px; top:10px; bottom:10px; background:#fff; border:2px solid #000;
+    display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:bold; color:#4585e9; letter-spacing:1px; white-space:nowrap;
+    transition:transform 2.4s cubic-bezier(.45,0,.25,1) 1.2s;
+  }
+  .env-front{
+    position:absolute; inset:0; background:#f2e7bd; border:2px solid #000;
+    clip-path:polygon(0 0, 50% 52%, 100% 0, 100% 100%, 0 100%);
+  }
+  .env-front::before{ /* 아래쪽 V 접힘선 */
+    content:""; position:absolute; inset:0; background:
+      linear-gradient(to top right, transparent calc(50% - 1px), #000 calc(50% - 1px) 50%, transparent 50%) left bottom/50% 52% no-repeat,
+      linear-gradient(to top left, transparent calc(50% - 1px), #000 calc(50% - 1px) 50%, transparent 50%) right bottom/50% 52% no-repeat;
+    opacity:.0;
+  }
+  .vline{position:absolute;inset:0;background:#000;pointer-events:none;
+    clip-path:polygon(0 0,50% 52%,100% 0,100% 4px,50% calc(52% + 5px),0 4px)}
+  .flap{
+    position:absolute; left:0; right:0; top:0; height:56%; background:#f7edc8;
+    clip-path:polygon(0 0,100% 0,50% 100%); transform-origin:top center; z-index:3;
+    transition:transform 1.1s cubic-bezier(.5,0,.3,1), z-index 0s .55s;
+    filter:drop-shadow(0 2px 0 #000);
+  }
+  .heart{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);z-index:4;font-size:26px;color:#e02020;text-shadow:1px 1px #000;transition:opacity .2s}
+    body.open .heart{opacity:0}
+  body.open .flap{opacity:0;transition:opacity .3s}
+  .letter img{display:block;width:80%;max-width:150px;height:auto}
+  body.open .letter{transform:translateY(-62%)}
+  body.open .stage{opacity:0;visibility:hidden;pointer-events:none}
+
+  /* ── 2) 메일 윈도우 (본문) ── */
+  .desk2{
+    position:relative; min-height:100svh; padding:32px 12px 72px; display:flex; justify-content:center; align-items:center;
+    opacity:0; pointer-events:none; transition:opacity .01s linear 4.6s;
+  }
+  body.open .desk2{opacity:1;pointer-events:auto}
+  .mail{width:min(100%,460px);transform:scale(.6);opacity:0}
+  body.open .mail{animation:pop .45s steps(5) 4.6s forwards}
+  @keyframes pop{to{transform:none;opacity:1}}
+  .menu{display:flex;gap:14px;padding:3px 6px;font-size:13px;border-bottom:1px solid var(--lo)}
+  .meta{padding:8px 8px 4px;font-size:12px;line-height:1.7}
+  .meta div{display:flex;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .meta b{display:inline-block;width:58px;flex-shrink:0}
+  .content{margin:6px;padding:22px 16px 20px;text-align:center;min-height:300px}
+  .marquee{background:#000;color:#0f0;padding:4px 0;overflow:hidden;white-space:nowrap;font-size:13px}
+  .marquee span{display:inline-block;padding-left:100%;animation:scroll 12s linear infinite}
+  @keyframes scroll{to{transform:translateX(-100%)}}
+  h1{font-size:28px;line-height:1.3;margin:14px 0 4px;color:#000080;text-shadow:2px 2px #ff0;letter-spacing:-1px}
+  .dday{display:inline-block;margin-top:6px;font-size:13px}
+  .dday b{background:#000;color:#f33;padding:3px 10px;font-size:20px;letter-spacing:2px;margin-left:4px;animation:blink 1.2s steps(2) infinite}
+  /* 지도 팝업 */
+  .mapwin{position:fixed;left:50%;top:50%;width:min(94vw,380px);max-height:92svh;overflow:auto;z-index:90;display:none;transform:translate(-50%,-50%)}
+  .mapwin.show{display:block;animation:pop2 .25s steps(3)}
+  .mapbody{padding:8px;position:relative;font-size:13px}
+  .cutemap{display:block;width:100%;height:auto;border:2px solid #000;background:#bfe8a8}
+  .pin{position:absolute;left:61%;top:70px;transform:translateX(-50%);text-align:center;animation:hop .8s steps(2) infinite alternate;pointer-events:none}
+  @keyframes hop{to{transform:translate(-50%,-6px)}}
+  .pin .flag{display:block;background:#fff;border:2px solid #000;padding:2px 6px;font-size:12px;white-space:nowrap}
+  .pin .dot{display:block;font-size:30px;line-height:1;filter:drop-shadow(2px 2px 0 rgba(0,0,0,.3))}
+  .addr{margin:8px 2px;line-height:1.7;text-align:center}
+  .addr b{display:block;font-size:15px;color:#000080}
+  .mapbody .row2{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:2px 0 6px}
+  .mapbody .btn{padding:9px 12px;font-size:13px}
+  .note{text-align:center;font-size:11px;color:#555}
+  /* 안내사항 팝업 */
+  .infopaper{padding:12px 12px 6px;background:#fff}
+  .infolist{display:grid;grid-template-columns:78px 1fr;gap:10px 10px;font-size:14px;line-height:1.6}
+  .infolist dt{font-weight:bold;color:#000080;border-bottom:1px dotted #999;padding-bottom:6px}
+  .infolist dd{border-bottom:1px dotted #999;padding-bottom:6px;word-break:keep-all}
+  .notetext{padding:4px 2px 10px;font-size:15px;line-height:1.8}
+  .notetext .nline{font-size:17px;margin-bottom:14px;color:#000080}
+  .notetext .nmsg{color:#555;word-break:keep-all}
+  /* 오류창 팝업 */
+  .err{position:fixed;left:50%;top:50%;width:min(88vw,320px);z-index:80;display:none;transform:translate(-50%,-50%)}
+  .err.show{display:block;animation:pop2 .25s steps(3)}
+  @keyframes pop2{from{transform:translate(-50%,-50%) scale(.7)}}
+  .err .body{padding:16px 14px 12px;display:flex;gap:12px;align-items:flex-start;line-height:1.6;font-size:13px}
+  .err .ico{font-size:30px}
+  .err .row2{display:flex;gap:8px;justify-content:center;padding:0 0 12px}
+  .photo{
+    width:68%; margin:10px auto; background:#c0c0c0; padding:3px;
+    box-shadow: inset -1px -1px var(--dk), inset 1px 1px var(--hi), inset -2px -2px var(--lo);
+  }
+  .photo div{aspect-ratio:2/1;background:repeating-conic-gradient(#d4d4d4 0 25%,#fff 0 50%) 0 0/16px 16px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#555}
+  .photo.wide{width:84%;cursor:pointer;background:#c0c0c0}
+  .photo.wide{cursor:default}
+  #art svg{display:block;width:100%;height:auto}
+  .kid{animation:bob .55s steps(2) infinite alternate}
+  @keyframes bob{to{transform:translateY(-7px)}}
+  .tw{animation:blink 1.1s steps(2) infinite}
+  .photo .school{flex-direction:column;gap:6px;background:linear-gradient(#7ec8ff 0 62%,#5cb85c 62%);color:#000;position:relative}
+  .school .bell{font-size:42px;line-height:1;filter:drop-shadow(3px 3px 0 rgba(0,0,0,.3))}
+  .school em{font-style:normal;font-weight:bold;font-size:11px;color:#fff;background:#000080;padding:2px 6px;letter-spacing:0;white-space:nowrap}
+  .school small{font-size:10px;color:#fff;text-shadow:1px 1px #000}
+  /* 사진 넣을 때: .photo div 안에 <img src="photo.jpg" style="width:100%;height:100%;object-fit:cover"> */
+  .text{line-height:1.9;font-size:15px;word-break:keep-all;margin:8px 0}
+  .when{margin:12px 0 4px;font-size:18px;font-weight:bold;color:#c00}
+  .where{font-size:14px;line-height:1.7}
+  .row{margin-top:16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+
+  /* ── 작업표시줄 + 음악 ── */
+  .taskbar{
+    position:fixed; left:0; right:0; bottom:0; height:calc(34px + 22px + env(safe-area-inset-bottom,0px)); z-index:60; background:var(--face);
+    display:flex; align-items:flex-start; gap:6px; padding:3px 4px 0; font-size:13px;
+    box-shadow: inset 0 1px var(--hi), 0 -1px var(--lo);
+  }
+  .taskbar .btn{min-height:0;padding:4px 8px;white-space:nowrap;font-size:12px}
+  .start{font-weight:bold;padding:4px 10px}
+  .task{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+  .task{flex:1;padding:3px 10px;background:none}
+  .player{display:none;align-items:center;gap:6px;padding:3px 8px;cursor:pointer;font-size:12px}
+  body.open .player.has-audio{display:flex}
+  .eq{display:flex;gap:2px;align-items:flex-end;height:12px}
+  .eq i{width:3px;background:#0a0;height:3px}
+  .player.playing .eq i{animation:eq .5s steps(3) infinite alternate}
+  .player.playing .eq i:nth-child(2){animation-delay:.15s}
+  .player.playing .eq i:nth-child(3){animation-delay:.3s}
+  @keyframes eq{to{height:12px}}
+  .clock{padding:3px 8px;font-size:12px;
+    box-shadow: inset 1px 1px var(--lo), inset -1px -1px var(--hi)}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.01s!important;transition-duration:.01s!important;transition-delay:0s!important}
+  }
+</style>
+</head>
+<body>
+
+<!-- 1) 새 편지 알림 -->
+<main class="stage">
+  <div class="icons">
+    <div><i>💾</i>내 문서</div>
+    <div><i>🗑️</i>휴지통</div>
+  </div>
+  <div class="win dialog">
+    <div class="title"><span>✉ 새 편지</span><span class="btns"><span class="tbtn">x</span></span></div>
+    <div class="body">
+      <p><span class="blink">NEW!</span> 새 편지가 도착했습니다.</p>
+      <button class="envelope" id="env" aria-label="편지 열기">
+        <div class="env-back"></div>
+        <div class="letter"><img src="img/logo.png" alt="SPORTSJOB ALIO"></div>
+        <div class="env-front"></div>
+        <div class="vline"></div>
+        <div class="flap"></div>
+        <div class="heart">♥</div>
+      </button>
+      <button class="btn" id="openBtn">▶ 편지 열기</button>
+    </div>
+  </div>
+</main>
+
+<!-- 2) 초대장 내용 (아래 문구는 전부 예시 — 나중에 수정) -->
+<section class="desk2">
+  <div class="win mail">
+    <div class="title"><span>✉ 스잡알고 제1회 동창회 - 받은 편지</span><span class="btns"><span class="tbtn">_</span><span class="tbtn">□</span><span class="tbtn">x</span></span></div>
+    <div class="menu"><span>파일</span><span>편집</span><span>보기</span><span>도움말</span></div>
+    <div class="meta">
+      <div><b>보낸이:</b>스잡알고 총무</div>
+      <div><b>제 목:</b>얘들아 반,,,반갑? 동창회 합니다</div>
+    </div>
+    <div class="sunken content">
+      <div class="marquee"><span>★☆ 제 1회 스잡알 고등학교 동창회 ★☆ 전원 집합 ★☆ 안 오면 서운함 ★☆</span></div>
+      <h1>제 1회<br>스잡알 고등학교<br>동창회</h1>
+      <div class="dday">동창회까지 <b id="dday">D-00</b></div>
+      <div class="photo"><div class="school"><span class="bell">🏫</span><em>SEJOB-AL HIGH SCHOOL</em><small>since 1999 · 제 1회 졸업</small></div></div>
+      <p class="text">
+        얘들아 반,,,반갑? 초면에 반갑다.<br>
+        잘 지냈니?
+      </p>
+      <div class="when">2026. 12. 26 (토) PM 6:00</div>
+      <div class="where"><b>칼스버그 비어라운지</b><br>서울 중구 을지로15길 32</div>
+      <div class="row">
+        <a class="btn" href="#" id="infoBtn" onclick="return false">필독사항</a>
+        <a class="btn" href="#" id="mapBtn" onclick="return false">오시는 길</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 오시는 길 지도 팝업 -->
+<div class="win mapwin" id="mapwin" role="dialog" aria-label="오시는 길">
+  <div class="title"><span>🗺 오시는길.exe</span><span class="btns"><span class="tbtn" data-mclose>x</span></span></div>
+  <div class="mapbody">
+    <svg viewBox="0 0 712 640" class="cutemap" aria-hidden="true" font-family="Galmuri11,monospace">
+      <style>
+        .lb{font-size:21px;fill:#3a3a3a;paint-order:stroke;stroke:#fff;stroke-width:5px;stroke-linejoin:round}
+        .lbs{font-size:18px;fill:#555;paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+        .em{font-size:26px}
+        .pinsvg{animation:hopsvg .8s steps(2) infinite alternate}
+        @keyframes hopsvg{to{transform:translateY(-10px)}}
+      </style>
+      <!-- 바닥 -->
+      <rect width="712" height="640" fill="#f6f0df"/>
+
+      <!-- 청계천 (위쪽 띠) -->
+      <path d="M90 82 L712 22 L712 70 L90 124 Z" fill="#b9e0a0" stroke="#7fae68" stroke-width="3"/>
+      <path d="M90 102 L712 46" stroke="#7cc4f0" stroke-width="14"/>
+      <path d="M90 102 L712 46" stroke="#fff" stroke-width="2" stroke-dasharray="10 10"/>
+
+      <!-- 큰길 (청계천 아래) -->
+      <path d="M0 148 L390 120 L712 92" stroke="#fff" stroke-width="34" fill="none"/>
+      <!-- 건물 아래 둘러가는 길 -->
+      <path d="M120 235 Q260 252 400 240 L650 236" stroke="#fff" stroke-width="22" fill="none"/>
+
+      <!-- 세로로 길게 뻗은 회색 길 (오른쪽) -->
+      <path d="M603 0 L655 520" stroke="#d9d9d9" stroke-width="16" fill="none"/>
+      <path d="M603 0 L655 520" stroke="#fff" stroke-width="2" stroke-dasharray="12 10" fill="none"/>
+
+      <!-- 3호선 / 을지로3가역 구역 -->
+      <path d="M78 330 L132 330 L140 545 L100 545 Z" fill="#f2c6b3" stroke="#e8a58a" stroke-width="3"/>
+      <path d="M70 0 L124 575" stroke="#f08030" stroke-width="7" fill="none"/>
+
+      <!-- 2호선 띠 -->
+      <rect x="0" y="538" width="712" height="56" fill="#e9e0f7" stroke="#b9a5e3" stroke-width="3"/>
+      <path d="M0 574 H712" stroke="#2fb34a" stroke-width="7"/>
+
+      <!-- 중앙 아파트 단지 큰 블록 (핀 아래) -->
+      <rect x="395" y="122" width="250" height="110" rx="4" fill="#dedbd2" stroke="#a9a59a" stroke-width="3"/>
+      <rect x="112" y="150" width="226" height="80" rx="4" fill="#e3ddd0" stroke="#a9a59a" stroke-width="3"/>
+      <!-- 왼쪽 큰 블록 -->
+      <rect x="0" y="150" width="92" height="160" fill="#e8e3d6" stroke="#b5b0a3" stroke-width="3"/>
+      <!-- 오른쪽 호텔 블록 -->
+      <rect x="430" y="248" width="120" height="58" fill="#eaddf5" stroke="#c4a8e0" stroke-width="3"/>
+      <rect x="514" y="262" width="108" height="100" fill="#eddff7" stroke="#c4a8e0" stroke-width="3"/>
+
+      <!-- 가운데 빽빽한 작은 건물들 -->
+      <g stroke="#bcb6a8" stroke-width="2" fill="#fbf7ea">
+        <rect x="330" y="310" width="34" height="28"/><rect x="368" y="304" width="40" height="30" fill="#f7d9d2"/>
+        <rect x="412" y="316" width="36" height="28"/><rect x="452" y="318" width="40" height="34" fill="#dfeaf7"/>
+        <rect x="316" y="344" width="40" height="32" fill="#f8efc4"/><rect x="360" y="340" width="36" height="34"/>
+        <rect x="400" y="348" width="44" height="30" fill="#e3f3de"/><rect x="448" y="356" width="40" height="30"/>
+        <rect x="302" y="382" width="36" height="30"/><rect x="342" y="380" width="44" height="34" fill="#f7d9d2"/>
+        <rect x="390" y="384" width="38" height="30"/><rect x="432" y="390" width="46" height="30" fill="#f8efc4"/>
+        <rect x="486" y="394" width="38" height="32"/><rect x="286" y="420" width="40" height="28" fill="#dfeaf7"/>
+        <rect x="332" y="420" width="48" height="30"/><rect x="384" y="424" width="40" height="28" fill="#e3f3de"/>
+        <rect x="430" y="428" width="44" height="30"/><rect x="480" y="432" width="42" height="32" fill="#f7d9d2"/>
+        <rect x="560" y="378" width="36" height="34"/><rect x="560" y="420" width="38" height="34" fill="#f8efc4"/>
+        <rect x="316" y="456" width="40" height="30"/><rect x="520" y="478" width="44" height="30"/>
+      </g>
+      <!-- 오른쪽 아래 상가 -->
+      <rect x="660" y="396" width="52" height="108" fill="#f8efc4" stroke="#bcb6a8" stroke-width="3"/>
+
+      <!-- 을지로15길 골목 -->
+      <path id="alley" d="M335 238 L302 292 L276 400 L255 528" stroke="#fff" stroke-width="14" fill="none"/>
+      <path d="M335 238 L302 292 L276 400 L255 528" stroke="#c9c9c9" stroke-width="2" stroke-dasharray="8 8" fill="none"/>
+      <text class="lb" font-size="20"><textPath href="#alley" startOffset="38%">을지로15길</textPath></text>
+
+      <!-- 지하철 출구 번호 -->
+      <g font-size="18" text-anchor="middle" fill="#222" stroke="#222" stroke-width="2">
+        <g fill="#f7d65a"><circle cx="84" cy="316" r="15"/><circle cx="122" cy="316" r="15"/><circle cx="190" cy="548" r="15"/><circle cx="200" cy="596" r="15"/><circle cx="60" cy="556" r="15"/></g>
+      </g>
+      <g font-size="18" text-anchor="middle" fill="#222">
+        <text x="84" y="323">4</text><text x="122" y="323">5</text><text x="190" y="555">6</text><text x="200" y="603">7</text><text x="60" y="563">3</text>
+      </g>
+      <!-- 을지로3가역 -->
+      <circle cx="125" cy="575" r="20" fill="#f08030" stroke="#fff" stroke-width="4"/>
+      <text x="125" y="582" font-size="22" text-anchor="middle" fill="#fff">3</text>
+      <text class="lb" x="46" y="624">을지로3가역</text>
+      <text class="lbs" x="470" y="565" fill="#3b8">2호선</text>
+      <text class="lbs" x="14" y="260" transform="rotate(0)">3호선↑</text>
+
+      <!-- 랜드마크 -->
+      <text class="em" x="128" y="212">🏪</text><text class="lbs" x="116" y="240">GS25</text>
+      <text class="em" x="278" y="176">🏢</text>
+      <text class="lb" x="188" y="206">힐스테이트</text>
+      <text class="lbs" x="196" y="224">세운센트럴</text>
+      <text class="em" x="552" y="334">🏨</text>
+      <text class="lb" x="498" y="294">호텔 더 보타닉 세운</text>
+      <text class="em" x="384" y="474">🛏</text>
+      <text class="lb" x="330" y="506">서울맘</text>
+      <text class="em" x="480" y="560">🛒</text>
+      <text class="lbs" x="446" y="520">을지스타몰</text>
+      <text class="em" x="668" y="260">🏪</text>
+
+      <!-- 목적지 핀 -->
+      <g transform="translate(552 122)">
+        <g class="pinsvg">
+          <rect x="-96" y="-98" width="192" height="30" fill="#fff" stroke="#000" stroke-width="3"/>
+          <text x="0" y="-77" font-size="19" text-anchor="middle" fill="#000">🍺 칼스버그 여기!</text>
+          <path d="M0 0 C-22 -22 -24 -36 -24 -42 A24 24 0 1 1 24 -42 C24 -36 22 -22 0 0Z" fill="#e0614a" stroke="#fff" stroke-width="4"/>
+          <rect x="-12" y="-52" width="18" height="20" fill="#fff"/>
+          <rect x="6" y="-48" width="6" height="12" fill="none" stroke="#fff" stroke-width="3"/>
+        </g>
+      </g>
+
+      <!-- 나침반 -->
+      <g><circle cx="676" cy="610" r="22" fill="#fff" stroke="#444" stroke-width="3"/><path d="M676 592 l7 18 h-14z" fill="#d33"/><text x="670" y="590" font-size="14" fill="#444">N</text></g>
+    </svg>
+    <div class="addr">
+      <b>칼스버그 비어라운지</b>
+      서울 중구 을지로15길 32<br>
+      1층 104·106·107·108A·108B·109호
+    </div>
+    <div class="row2">
+      <button class="btn" id="copyAddr">주소 복사</button>
+      <a class="btn" href="https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%20%EC%A4%91%EA%B5%AC%20%EC%9D%84%EC%A7%80%EB%A1%9C15%EA%B8%B8%2032%20%EC%B9%BC%EC%8A%A4%EB%B2%84%EA%B7%B8%20%EB%B9%84%EC%96%B4%EB%9D%BC%EC%9A%B4%EC%A7%80" target="_blank" rel="noopener">네이버지도</a>
+      <button class="btn" data-mclose>닫기</button>
+    </div>
+    <div class="note">※ 실제 지도를 보고 그린 약도예요</div>
+  </div>
+</div>
+
+<!-- 안내사항 팝업 (아래 내용은 전부 예시 — 나중에 수정) -->
+<div class="win mapwin" id="infowin" role="dialog" aria-label="필독사항">
+  <div class="title"><span>📝 필독사항.txt</span><span class="btns"><span class="tbtn" data-iclose>x</span></span></div>
+  <div class="mapbody">
+    <div class="sunken infopaper">
+      <div class="notetext">
+        <p class="nline"><b>드레스코드 : 000</b></p>
+        <p class="nmsg">((멘트))</p>
+      </div>
+    </div>
+    <div class="row2"><button class="btn" data-iclose>확인</button></div>
+  </div>
+</div>
+
+<!-- 오류창 팝업 (편지 연 뒤 잠시 후 등장) -->
+<div class="win err" id="err" role="alertdialog">
+  <div class="title"><span>⚠ 치명적 오류</span><span class="btns"><span class="tbtn" data-close>x</span></span></div>
+  <div class="body"><div class="ico">⛔</div>
+    <div>동창회에 불참할 경우<br><b>'서운함.exe'</b>가 실행되며<br>시스템이 불안정해질 수 있습니다.</div></div>
+  <div class="row2"><button class="btn" data-close>참석한다</button><button class="btn" data-close>당연히 참석</button></div>
+</div>
+
+<!-- 3) 작업표시줄 + 음악: 같은 폴더에 music.mp3 를 넣으면 플레이어가 나타나요 -->
+<audio id="bgm" src="music.mp3" preload="auto"></audio>
+<div class="taskbar">
+  <div class="btn player" id="player" role="button" aria-label="소리 켜기/끄기">
+    <div class="eq"><i></i><i></i><i></i></div><span id="ptext">🔊 소리 ON</span>
+  </div>
+  <div class="btn" id="replay" role="button" aria-label="처음부터 다시 보기" style="padding:3px 8px;font-size:12px">↻ 다시</div>
+  <div class="task sunken">✉ 새 편지</div>
+  <div class="clock" id="clock">18:00</div>
+</div>
+
+<script>
+  const bgm = document.getElementById('bgm');
+  const player = document.getElementById('player');
+  const ptext = document.getElementById('ptext');
+  const clock = document.getElementById('clock');
+
+  const tick = () => { const d=new Date(); clock.textContent = String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); };
+  tick(); setInterval(tick, 30000);
+
+  bgm.addEventListener('canplay', () => player.classList.add('has-audio'), {once:true});
+  bgm.addEventListener('error', () => player.classList.remove('has-audio'));
+  function sync(){ const on=!bgm.paused && !bgm.muted; player.classList.toggle('playing',on); ptext.textContent = bgm.muted?'🔇 소리 OFF':'🔊 소리 ON'; }
+  bgm.addEventListener('play', sync); bgm.addEventListener('pause', sync);
+  // 소리 켜기/끄기 (끄면 음소거, 다시 누르면 켜짐. 재생이 막혀 있었다면 이때 재생 시작)
+  player.addEventListener('click', () => {
+    bgm.muted = !bgm.muted;
+    if (!bgm.muted && bgm.paused) bgm.play().catch(()=>{});
+    sync();
+  });
+
+  // ★ 후렴이 시작되는 위치(초). 노래를 들어보고 맞게 고치세요. 예: 1분 05초 → 65
+  const START_AT = 0;   // 처음부터 재생
+  // 곡 길이보다 크면(잘못된 값) 처음부터 재생
+  const seekStart = () => { try { bgm.currentTime = (bgm.duration && START_AT < bgm.duration) ? START_AT : 0; } catch(e) {} };
+  // 소리 서서히 키우기 (FADE_MS 동안 0 → 1)
+  const FADE_MS = 3000;
+  let fadeT;
+  function fadeIn(){
+    clearInterval(fadeT); bgm.volume = 0;
+    const t0 = performance.now();
+    fadeT = setInterval(() => {
+      const k = Math.min(1, (performance.now()-t0)/FADE_MS);
+      bgm.volume = k;
+      if (k >= 1) clearInterval(fadeT);
+    }, 50);
+  }
+  // 1분 45초부터 서서히 줄여 끄고 → 5초 쉬었다가 → 다시 처음부터 재생
+  const CUT_AT = 105, FADEOUT_S = 2, GAP_MS = 5000;
+  let gapT = null;
+  function restartLater(){
+    clearTimeout(gapT);
+    gapT = setTimeout(() => { gapT = null; seekStart(); fadeIn(); bgm.play().catch(()=>{}); }, GAP_MS);
+  }
+  setInterval(() => {
+    if (bgm.paused || gapT) return;
+    const t = bgm.currentTime;
+    if (t >= CUT_AT) {
+      clearInterval(fadeT);
+      const left = 1 - (t - CUT_AT) / FADEOUT_S;
+      if (left > 0) bgm.volume = left;
+      else { bgm.volume = 0; bgm.pause(); restartLater(); }
+    }
+  }, 100);
+  bgm.addEventListener('ended', () => { restartLater(); }); // 끝나면 후렴부터 다시
+
+  // D-day (행사 날짜는 여기서 수정)
+  const EVENT = new Date('2026-12-26T18:00:00');
+  const days = Math.ceil((EVENT - new Date()) / 86400000);
+  document.getElementById('dday').textContent = days > 0 ? 'D-' + days : (days === 0 ? 'D-DAY!' : 'D+' + (-days));
+
+  // 오시는 길 지도
+  const mapwin = document.getElementById('mapwin');
+  document.getElementById('mapBtn').addEventListener('click', () => mapwin.classList.add('show'));
+  mapwin.querySelectorAll('[data-mclose]').forEach(el => el.addEventListener('click', () => mapwin.classList.remove('show')));
+  document.getElementById('copyAddr').addEventListener('click', async (e) => {
+    const t = '서울 중구 을지로15길 32 칼스버그 비어라운지';
+    try { await navigator.clipboard.writeText(t); e.target.textContent = '복사됨!'; }
+    catch(_) { e.target.textContent = '길게 눌러 복사'; }
+    setTimeout(() => e.target.textContent = '주소 복사', 1500);
+  });
+
+  // 안내사항
+  const infowin = document.getElementById('infowin');
+  document.getElementById('infoBtn').addEventListener('click', () => infowin.classList.add('show'));
+  infowin.querySelectorAll('[data-iclose]').forEach(el => el.addEventListener('click', () => infowin.classList.remove('show')));
+
+  // 오류창
+  const err = document.getElementById('err');
+  let errTimer;
+  err.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', () => err.classList.remove('show')));
+
+  function openLetter(){
+    if (document.body.classList.contains('open')) return;
+    document.body.classList.add('open');
+    errTimer = setTimeout(() => err.classList.add('show'), 9500);
+    seekStart(); fadeIn();
+    bgm.play().catch(() => {});   // 터치가 재생 허용 제스처 역할
+    setTimeout(() => window.scrollTo({top:0}), 50);
+  }
+  // 처음 상태(봉투 닫힘)로 되돌리기
+  document.getElementById('replay').addEventListener('click', () => {
+    bgm.pause(); seekStart(); clearTimeout(gapT); gapT = null;
+    clearTimeout(errTimer); err.classList.remove('show'); mapwin.classList.remove('show'); infowin.classList.remove('show');
+    document.body.classList.remove('open');
+    window.scrollTo({top:0});
+  });
+  document.getElementById('env').addEventListener('click', openLetter);
+  document.getElementById('openBtn').addEventListener('click', openLetter);
+</script>
+</body>
+</html>
